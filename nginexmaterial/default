@@ -1,0 +1,13 @@
+server {
+        listen 443 ssl;
+        server_name localhost;
+
+        ssl_certificate /nginexFolder/opensslMaterial/nginx.crt;
+        ssl_certificate_key /nginexFolder/opensslMaterial/nginx.key;
+
+        ssl_protocols        TLSv1.2 TLSv1.3;
+        location / {
+            root /nginexFolder/nginexMaterial;
+            index index.html;
+        }
+}
