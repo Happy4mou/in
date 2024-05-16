@@ -6,8 +6,13 @@ server {
         ssl_certificate_key /nginexFolder/opensslMaterial/nginx.key;
 
         ssl_protocols        TLSv1.2 TLSv1.3;
+        root /WordPress/wordpress_src;
         location / {
-            root /nginexFolder/nginexMaterial;
-            index index.html;
+            index index.php;
         }
+	    location ~ \.php$ {
+		    include snippets/fastcgi-php.conf;
+		    fastcgi_pass mywp:9000;
+	    }
+
 }
