@@ -1,0 +1,17 @@
+server {
+        listen 443 ssl;
+        server_name localhost;
+
+        ssl_certificate SSL_CEr;
+        ssl_certificate_key SSL_KEy;
+
+        ssl_protocols        TLSv1.2;
+        root /WordPress/wordpress_src;
+        location / {
+            index index.php;
+        }
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass mywp:9000;
+    }
+}

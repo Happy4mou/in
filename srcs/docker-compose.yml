@@ -1,0 +1,57 @@
+  services:
+    mariadb:
+        build: ./requirements/MariaDB/
+        image: mariadb
+        container_name: mydb
+        networks:
+          - my_network
+        env_file:
+          - .env
+        volumes:
+          - vol_mariadb:/var/lib/mysql
+        restart: always
+
+    wordpress:
+        build: ./requirements/WordPress/
+        image: wordpress
+        container_name: mywp
+        networks:
+          - my_network
+        depends_on:
+            - mariadb
+        volumes:
+          - vol_wpNg:/WordPress/wordpress_src
+        env_file:
+          - .env
+        restart: always
+    nginx:
+        build: ./requirements/nginx/
+        image: ngnix
+        container_name: nginx
+        ports:
+          - "443:443"
+        networks:
+          - my_network
+        depends_on:
+            - wordpress
+        volumes:
+          - vol_wpNg:/WordPress/wordpress_src
+        env_file:
+          - .env
+        restart: always
+  networks:
+    my_network:
+      name: my_network
+  volumes:
+    vol_mariadb:
+      name: vol_mariadb
+      driver_opts:
+        type: none
+        device: /home/mmajdoub/dataBase
+        o: bind
+    vol_wpNg:
+      name: vol_wordpress
+      driver_opts:
+        type: none
+        device: /home/mmajdoub/data
+        o: bind
